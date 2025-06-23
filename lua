@@ -4497,7 +4497,6 @@ function library:init()
                 {'0ms', true},
             };
             lock = 'custom';
-            position = newUDim2(0,0,0,0);
             refreshrate = 25;
         }
 
