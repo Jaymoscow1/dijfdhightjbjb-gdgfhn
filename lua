@@ -4622,7 +4622,7 @@ function library:CreateSettingsTab(menu)
     local creditsSection = settingsTab:AddSection('Credits', 2);
     creditsSection:AddSeparator({text = 'Owners/Developers'});
     creditsSection:AddText({text = "luabit"})
-    creditsSection:AddText({text = "saint.lua"})
+    creditsSection:AddText({text = "saints.lua"})
     creditsSection:AddSeparator({text = 'Helpers'});
     creditsSection:AddText({text = "bredhax"})
     creditsSection:AddText({text = "sw.m"})
