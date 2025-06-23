@@ -1217,7 +1217,7 @@ function library:init()
         ----- Create Objects ----
         do
             local size = data.size or newUDim2(0, 1200, 0, 1200);
-            local position = data.position or newUDim2(0, 350, 0, 450);
+            local position = data.position or newUDim2(0, 1200, 0, 1200);
             local objs = window.objects;
             local z = library.zindexOrder.window;
 
