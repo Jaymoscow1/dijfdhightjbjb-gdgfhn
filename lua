@@ -1,3 +1,4 @@
+
 local startupArgs = ({...})[1] or {}
 
 if getgenv().library ~= nil then
@@ -1216,9 +1217,9 @@ function library:init()
 
         ----- Create Objects ----
         do
-            local size = data.size or newUDim2(0, 1200, 0, 1200);
-            local position = data.position or newUDim2(0, 350, 0, 450);
-            local objs = window.objects;@
+            local size = data.size or newUDim2(0, 525, 0, 650);
+            local position = data.position or newUDim2(0, 250, 0, 150);
+            local objs = window.objects;
             local z = library.zindexOrder.window;
 
             objs.background = utility:Draw('Square', {
