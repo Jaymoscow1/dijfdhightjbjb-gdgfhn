@@ -4491,7 +4491,7 @@ function library:init()
             objects = {};
             text = {
                 {"silent.cc", true},
-                {"V"..getgenv().Config.Version, true},
+                {"V 1.1"..getgenv().Config.Version, true},
                 {getgenv().luaguardvars.DiscordName, true},
                 {'0 fps', true},
                 {'0ms', true},
