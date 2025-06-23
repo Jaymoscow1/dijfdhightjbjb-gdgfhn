@@ -4529,9 +4529,7 @@ function library:init()
             end
         end
 
-        do
-            local objs = self.watermark.objects;
-            local z = self.zindexOrder.watermark;
+
             
             objs.background = utility:Draw('Square', {
                 Visible = false;
