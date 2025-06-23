@@ -418,7 +418,7 @@ do
     function utility:GetHoverObject()
         local objects = {}
         for i,v in next, library.drawings do
-            if v.Object.Visible and v.Class == 'Square' and self:MouseOver(v.Object) then
+            if v.Object.Visible and v.Class == 'Rectangle' and self:MouseOver(v.Object) then
                 table.insert(objects,v.Object)
             end
         end
@@ -458,16 +458,16 @@ do
                 local parent = drawing.Parent ~= nil and library.drawings[drawing.Parent.Object] or nil
                 local parentSize,parentPos,parentVis = workspace.CurrentCamera.ViewportSize, Vector2.new(0,0), true;
                 if parent ~= nil then
-                    parentSize = (parent.Class == 'Square' or parent.Class == 'Image') and parent.Object.Size or parent.Class == 'Text' and parent.TextBounds or workspace.CurrentCamera.ViewportSize
+                    parentSize = (parent.Class == 'Rectangle' or parent.Class == 'Image') and parent.Object.Size or parent.Class == 'Text' and parent.TextBounds or workspace.CurrentCamera.ViewportSize
                     parentPos = parent.Object.Position
                     parentVis = parent.Object.Visible
                 end
 
-                if drawing.Class == 'Square' or drawing.Class == 'Image' then
+                if drawing.Class == 'Rectangle' or drawing.Class == 'Image' then
                     drawing.Object.Size = typeof(drawing.Size) == 'Vector2' and drawing.Size or typeof(drawing.Size) == 'UDim2' and utility:UDim2ToVector2(drawing.Size,parentSize)
                 end
 
-                if drawing.Class == 'Square' or drawing.Class == 'Image' or drawing.Class == 'Circle' or drawing.Class == 'Text' then
+                if drawing.Class == 'Rectangle' or drawing.Class == 'Image' or drawing.Class == 'Circle' or drawing.Class == 'Text' then
                     drawing.Object.Position = parentPos + (typeof(drawing.Position) == 'Vector2' and drawing.Position or utility:UDim2ToVector2(drawing.Position,parentSize))
                 end
 
@@ -507,10 +507,10 @@ do
 
                 local lastval = drawing[i]
 
-                if i == 'Size' and (class == 'Square' or class == 'Image') then
+                if i == 'Size' and (class == 'Rectangle' or class == 'Image') then
                     drawing.Object.Size = utility:UDim2ToVector2(v,drawing.Parent == nil and workspace.CurrentCamera.ViewportSize or drawing.Parent.Object.Size);
                     drawing.AbsoluteSize = drawing.Object.Size;
-                elseif i == 'Position' and (class == 'Square' or class == 'Image' or class == 'Text') then
+                elseif i == 'Position' and (class == 'Rectangle' or class == 'Image' or class == 'Text') then
                     drawing.Object.Position =  utility:UDim2ToVector2(v,drawing.Parent == nil and newVector2(0,0) or drawing.Parent.Object.Position);
                     drawing.AbsolutePosition = drawing.Object.Position;
                 elseif i == 'Parent' then
@@ -560,7 +560,7 @@ do
 
         properties = typeof(properties) == 'table' and properties or {}
 
-        if class == 'Square' and properties.Filled == nil then
+        if class == 'Rectangle' and properties.Filled == nil then
             properties.Filled = true;
         end
 
@@ -880,12 +880,12 @@ function library:init()
             local objs = notification;
             local z = self.zindexOrder.notification;
 
-            notification.holder = utility:Draw('Square', {
+            notification.holder = utility:Draw('Rectangle', {
                 Position = newUDim2(0, 0, 0, 75);
                 Transparency = 0;
             })
             
-            notification.background = utility:Draw('Square', {
+            notification.background = utility:Draw('Rectangle', {
                 Size = newUDim2(1,0,1,0);
                 Position = newUDim2(0, -500, 0, 0);
                 Parent = notification.holder;
@@ -893,7 +893,7 @@ function library:init()
                 ZIndex = z;
             })
 
-            notification.border1 = utility:Draw('Square', {
+            notification.border1 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 2';
@@ -901,7 +901,7 @@ function library:init()
                 ZIndex = z-1;
             })
 
-            objs.border2 = utility:Draw('Square', {
+            objs.border2 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 3';
@@ -917,7 +917,7 @@ function library:init()
                 ZIndex = z+1;
             })
 
-            notification.accentBar = utility:Draw('Square',{
+            notification.accentBar = utility:Draw('Rectangle',{
                 Size = newUDim2(0,5,1,4);
                 Position = newUDim2(0,0,0,-2);
                 Parent = notification.background;
@@ -991,14 +991,14 @@ function library:init()
             local z = self.zindexOrder.indicator;
             local objs = indicator.objects;
 
-            objs.background = utility:Draw('Square', {
+            objs.background = utility:Draw('Rectangle', {
                 Size = newUDim2(0, 200, 0, 16);
                 Position = indicator.position;
                 ThemeColor = 'Background';
                 ZIndex = z;
             })
 
-            objs.border1 = utility:Draw('Square', {
+            objs.border1 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 2';
@@ -1006,7 +1006,7 @@ function library:init()
                 ZIndex = z-1;
             })
 
-            objs.border2 = utility:Draw('Square', {
+            objs.border2 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 3';
@@ -1014,7 +1014,7 @@ function library:init()
                 ZIndex = z-2;
             })
 
-            objs.topborder = utility:Draw('Square', {
+            objs.topborder = utility:Draw('Rectangle', {
                 Size = newUDim2(1,0,0,1);
                 ThemeColor = 'Accent';
                 Parent = objs.background;
@@ -1080,14 +1080,14 @@ function library:init()
                 local z = library.zindexOrder.indicator;
                 local objs = value.objects;
 
-                objs.background = utility:Draw('Square', {
+                objs.background = utility:Draw('Rectangle', {
                     Size = newUDim2(1, 0, 0, 16);
                     ThemeColor = 'Background';
                     ZIndex = z;
                     Parent = indicator.objects.background;
                 })
     
-                objs.border1 = utility:Draw('Square', {
+                objs.border1 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 2';
@@ -1095,7 +1095,7 @@ function library:init()
                     ZIndex = z-1;
                 })
     
-                objs.border2 = utility:Draw('Square', {
+                objs.border2 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 3';
@@ -1218,17 +1218,17 @@ function library:init()
         do
             local size = data.size or newUDim2(0, 1200, 0, 1200);
             local position = data.position or newUDim2(0, 350, 0, 450);
-            local objs = window.objects;
+            local objs = window.objects;@
             local z = library.zindexOrder.window;
 
-            objs.background = utility:Draw('Square', {
+            objs.background = utility:Draw('Rectangle', {
                 Size = size;
                 Position = position;
                 ThemeColor = 'Background';
                 ZIndex = z;
             })
 
-            objs.innerBorder1 = utility:Draw('Square', {
+            objs.innerBorder1 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 3';
@@ -1236,7 +1236,7 @@ function library:init()
                 Parent = objs.background;
             })
 
-            objs.innerBorder2 = utility:Draw('Square', {
+            objs.innerBorder2 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 1';
@@ -1244,7 +1244,7 @@ function library:init()
                 Parent = objs.innerBorder1;
             })
 
-            objs.midBorder = utility:Draw('Square', {
+            objs.midBorder = utility:Draw('Rectangle', {
                 Size = newUDim2(1,10,1,25);
                 Position = newUDim2(0,-5,0,-20);
                 ThemeColor = 'Border 2';
@@ -1252,7 +1252,7 @@ function library:init()
                 Parent = objs.innerBorder2;
             })
 
-            objs.outerBorder1 = utility:Draw('Square', {
+            objs.outerBorder1 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 1';
@@ -1260,7 +1260,7 @@ function library:init()
                 Parent = objs.midBorder;
             })
 
-            objs.outerBorder2 = utility:Draw('Square', {
+            objs.outerBorder2 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 3';
@@ -1268,7 +1268,7 @@ function library:init()
                 Parent = objs.outerBorder1;
             })
 
-            objs.topBorder = utility:Draw('Square', {
+            objs.topBorder = utility:Draw('Rectangle', {
                 Size = newUDim2(1,0,0,1);
                 ThemeColor = 'Accent';
                 ZIndex = z+1;
@@ -1286,7 +1286,7 @@ function library:init()
                 Parent = objs.midBorder;
             })
 
-            objs.groupBackground = utility:Draw('Square', {
+            objs.groupBackground = utility:Draw('Rectangle', {
                 Size = newUDim2(1,-16,1,-(16+23));
                 Position = newUDim2(0,8,0,8+23);
                 ThemeColor = 'Group Background';
@@ -1294,7 +1294,7 @@ function library:init()
                 Parent = objs.background;
             })
 
-            objs.groupInnerBorder = utility:Draw('Square', {
+            objs.groupInnerBorder = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 1';
@@ -1302,7 +1302,7 @@ function library:init()
                 Parent = objs.groupBackground;
             })
 
-            objs.groupOuterBorder = utility:Draw('Square', {
+            objs.groupOuterBorder = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 3';
@@ -1310,7 +1310,7 @@ function library:init()
                 Parent = objs.groupInnerBorder;
             })
 
-            objs.tabHolder = utility:Draw('Square', {
+            objs.tabHolder = utility:Draw('Rectangle', {
                 Size = newUDim2(1,0,0,20);
                 Position = newUDim2(0,0,0,-21);
                 Parent = objs.groupBackground;
@@ -1318,7 +1318,7 @@ function library:init()
                 ZIndex = z+1;
             })
 
-            objs.columnholder1 = utility:Draw('Square', {
+            objs.columnholder1 = utility:Draw('Rectangle', {
                 Size = newUDim2(.48, 0, .96, 0);
                 Position = newUDim2(.01, 0, .02, 0);
                 Transparency = 0;
@@ -1326,7 +1326,7 @@ function library:init()
                 Parent = objs.groupBackground;
             })
 
-            objs.columnholder2 = utility:Draw('Square', {
+            objs.columnholder2 = utility:Draw('Rectangle', {
                 Size = newUDim2(.48, 0, .96, 0);
                 Position = newUDim2(1 - (.48 + .01), 0, .02, 0);
                 Transparency = 0;
@@ -1335,7 +1335,7 @@ function library:init()
             })
 
 
-            objs.dragdetector = utility:Draw('Square',{
+            objs.dragdetector = utility:Draw('Rectangle',{
                 Size = newUDim2(1,0,1,0);
                 Parent = objs.midBorder;
                 Transparency = 0;
@@ -1374,7 +1374,7 @@ function library:init()
                 local objs = window.colorpicker.objects;
                 local z = library.zindexOrder.colorpicker;
 
-                objs.background = utility:Draw('Square', {
+                objs.background = utility:Draw('Rectangle', {
                     Visible = false;
                     Size = newUDim2(0,200,0,242);
                     Position = newUDim2(1,-200,1,10);
@@ -1383,7 +1383,7 @@ function library:init()
                     Parent = window.objects.background;
                 })
 
-                objs.border1 = utility:Draw('Square', {
+                objs.border1 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1391,7 +1391,7 @@ function library:init()
                     Parent = objs.background;
                 })
 
-                objs.border2 = utility:Draw('Square', {
+                objs.border2 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 1';
@@ -1399,7 +1399,7 @@ function library:init()
                     Parent = objs.border1;
                 })
 
-                objs.border3 = utility:Draw('Square', {
+                objs.border3 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1418,7 +1418,7 @@ function library:init()
                     Parent = objs.background;
                 })
 
-                objs.mainColor = utility:Draw('Square', {
+                objs.mainColor = utility:Draw('Rectangle', {
                     Size = newUDim2(0, 175, 0, 175);
                     Position = newUDim2(0, 5, 0, 25);
                     Color = c3new(1,0,0);
@@ -1440,7 +1440,7 @@ function library:init()
                     Parent = objs.mainColor;
                 })
 
-                objs.colorBorder = utility:Draw('Square', {
+                objs.colorBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1448,7 +1448,7 @@ function library:init()
                     Parent = objs.mainColor;
                 })
 
-                objs.mainDetector = utility:Draw('Square',{
+                objs.mainDetector = utility:Draw('Rectangle',{
                     Size = newUDim2(1,0,1,0);
                     Transparency = 0;
                     ZIndex = z+10;
@@ -1463,7 +1463,7 @@ function library:init()
                     Parent = objs.background;
                 })
 
-                objs.hueBorder = utility:Draw('Square', {
+                objs.hueBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1471,14 +1471,14 @@ function library:init()
                     Parent = objs.hue;
                 })
 
-                objs.hueDetector = utility:Draw('Square',{
+                objs.hueDetector = utility:Draw('Rectangle',{
                     Size = newUDim2(1,0,1,0);
                     Transparency = 0;
                     ZIndex = z+10;
                     Parent = objs.hue;
                 })
 
-                objs.transColor = utility:Draw('Square', {
+                objs.transColor = utility:Draw('Rectangle', {
                     Size = newUDim2(0,10,0,175);
                     Position = newUDim2(0,185,0,25);
                     Color = c3new(1,0,0);
@@ -1493,7 +1493,7 @@ function library:init()
                     Parent = objs.transColor;
                 })
 
-                objs.transBorder = utility:Draw('Square', {
+                objs.transBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1501,14 +1501,14 @@ function library:init()
                     Parent = objs.transColor;
                 })
 
-                objs.transDetector = utility:Draw('Square',{
+                objs.transDetector = utility:Draw('Rectangle',{
                     Size = newUDim2(1,0,1,0);
                     Transparency = 0;
                     ZIndex = z+10;
                     Parent = objs.transColor;
                 })
 
-                objs.pointer = utility:Draw('Square', {
+                objs.pointer = utility:Draw('Rectangle', {
                     Size = newUDim2(0,2,0,2);
                     Position = newUDim2(0,0,0,0);
                     Color = c3new(1,1,1);
@@ -1516,7 +1516,7 @@ function library:init()
                     Parent = objs.mainColor;
                 })
 
-                objs.pointerBorder = utility:Draw('Square', {
+                objs.pointerBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     Color = c3new(0,0,0);
@@ -1524,14 +1524,14 @@ function library:init()
                     Parent = objs.pointer;
                 })
 
-                objs.hueSlider = utility:Draw('Square', {
+                objs.hueSlider = utility:Draw('Rectangle', {
                     Size = newUDim2(0,1,1,0);
                     Color = c3new(1,1,1);
                     ZIndex = z+4;
                     Parent = objs.hue;
                 })
 
-                objs.hueSliderBorder = utility:Draw('Square', {
+                objs.hueSliderBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     Color = c3new(0,0,0);
@@ -1539,14 +1539,14 @@ function library:init()
                     Parent = objs.hueSlider;
                 })
 
-                objs.transSlider = utility:Draw('Square', {
+                objs.transSlider = utility:Draw('Rectangle', {
                     Size = newUDim2(1,0,0,1);
                     Color = c3new(1,1,1);
                     ZIndex = z+5;
                     Parent = objs.trans;
                 })
 
-                objs.transSliderBorder = utility:Draw('Square', {
+                objs.transSliderBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     Color = c3new(0,0,0);
@@ -1554,7 +1554,7 @@ function library:init()
                     Parent = objs.transSlider;
                 })
 
-                objs.rBackground = utility:Draw('Square', {
+                objs.rBackground = utility:Draw('Rectangle', {
                     Size = newUDim2(0, 60, 0, 15);
                     Position = newUDim2(0, 5, 1, - 20);
                     ThemeColor = 'Option Background';
@@ -1562,7 +1562,7 @@ function library:init()
                     ZIndex = z+5;
                 })
 
-                objs.rBorder = utility:Draw('Square', {
+                objs.rBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     Color = c3new(0,0,0);
@@ -1582,7 +1582,7 @@ function library:init()
                     Parent = objs.rBackground;
                 })
 
-                objs.gBackground = utility:Draw('Square', {
+                objs.gBackground = utility:Draw('Rectangle', {
                     Size = newUDim2(0, 60, 0, 15);
                     Position = newUDim2(0, 70, 1, - 20);
                     ThemeColor = 'Option Background';
@@ -1590,7 +1590,7 @@ function library:init()
                     ZIndex = z+5;
                 })
 
-                objs.gBorder = utility:Draw('Square', {
+                objs.gBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     Color = c3new(0,0,0);
@@ -1610,7 +1610,7 @@ function library:init()
                     Parent = objs.gBackground;
                 })
 
-                objs.bBackground = utility:Draw('Square', {
+                objs.bBackground = utility:Draw('Rectangle', {
                     Size = newUDim2(0, 60, 0, 15);
                     Position = newUDim2(0, 135, 1, - 20);
                     ThemeColor = 'Option Background';
@@ -1618,7 +1618,7 @@ function library:init()
                     ZIndex = z+5;
                 })
 
-                objs.bBorder = utility:Draw('Square', {
+                objs.bBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     Color = c3new(0,0,0);
@@ -1744,7 +1744,7 @@ function library:init()
                 local objs = window.dropdown.objects;
                 local z = library.zindexOrder.dropdown;
 
-                objs.background = utility:Draw('Square', {
+                objs.background = utility:Draw('Rectangle', {
                     Visible = false;
                     Size = newUDim2(1,-3,0,50);
                     Position = newUDim2(0,3,1,0);
@@ -1753,7 +1753,7 @@ function library:init()
                     Parent = window.objects.background;
                 })
 
-                objs.border1 = utility:Draw('Square', {
+                objs.border1 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1761,7 +1761,7 @@ function library:init()
                     Parent = objs.background;
                 })
 
-                objs.border2 = utility:Draw('Square', {
+                objs.border2 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 1';
@@ -1769,7 +1769,7 @@ function library:init()
                     Parent = objs.border1;
                 })
 
-                objs.border3 = utility:Draw('Square', {
+                objs.border3 = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border';
@@ -1786,7 +1786,7 @@ function library:init()
                         local valueObject = self.objects.values[idx]
                         if valueObject == nil then
                             valueObject = {};
-                            valueObject.background = utility:Draw('Square', {
+                            valueObject.background = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,-4,0,18);
                                 Color = Color3.new(.25,.25,.25);
                                 Transparency = 0;
@@ -1933,14 +1933,14 @@ function library:init()
                 local objs = tab.objects;
                 local z = library.zindexOrder.window + 5;
 
-                objs.background = utility:Draw('Square', {
+                objs.background = utility:Draw('Rectangle', {
                     Size = newUDim2(0,50,1,0);
                     Parent = self.objects.tabHolder;
                     ThemeColor = 'Unselected Tab Background';
                     ZIndex = z;
                 })
 
-                objs.innerBorder = utility:Draw('Square', {
+                objs.innerBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 1';
@@ -1948,7 +1948,7 @@ function library:init()
                     Parent = objs.background;
                 })
     
-                objs.outerBorder = utility:Draw('Square', {
+                objs.outerBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,2,1,2);
                     Position = newUDim2(0,-1,0,-1);
                     ThemeColor = 'Border 3';
@@ -1956,7 +1956,7 @@ function library:init()
                     Parent = objs.innerBorder;
                 })
 
-                objs.topBorder = utility:Draw('Square', {
+                objs.topBorder = utility:Draw('Rectangle', {
                     Size = newUDim2(1,0,0,1);
                     ThemeColor = 'Unselected Tab Background';
                     ZIndex = z+1;
@@ -1998,13 +1998,13 @@ function library:init()
                     local objs = section.objects;
                     local z = library.zindexOrder.window+15;
 
-                    objs.background = utility:Draw('Square', {
+                    objs.background = utility:Draw('Rectangle', {
                         ThemeColor = 'Section Background';
                         ZIndex = z;
                         Parent = window.objects['columnholder'..(section.side)];
                     })
 
-                    objs.innerBorder = utility:Draw('Square', {
+                    objs.innerBorder = utility:Draw('Rectangle', {
                         Size = newUDim2(1,2,1,1);
                         Position = newUDim2(0,-1,0,0);
                         ThemeColor = 'Border 3';
@@ -2012,7 +2012,7 @@ function library:init()
                         Parent = objs.background;
                     })
 
-                    objs.outerBorder = utility:Draw('Square', {
+                    objs.outerBorder = utility:Draw('Rectangle', {
                         Size = newUDim2(1,2,1,1);
                         Position = newUDim2(0,-1,0,0);
                         ThemeColor = 'Border 1';
@@ -2020,7 +2020,7 @@ function library:init()
                         Parent = objs.innerBorder;
                     })
 
-                    objs.topBorder1 = utility:Draw('Square', {
+                    objs.topBorder1 = utility:Draw('Rectangle', {
                         Size = newUDim2(.025,1,0,1);
                         Position = newUDim2(0,-1,0,0);
                         ThemeColor = 'Accent';
@@ -2028,7 +2028,7 @@ function library:init()
                         Parent = objs.background;
                     })
 
-                    objs.topBorder2 = utility:Draw('Square', {
+                    objs.topBorder2 = utility:Draw('Rectangle', {
                         ThemeColor = 'Accent';
                         ZIndex = z+1;
                         Parent = objs.background;
@@ -2043,7 +2043,7 @@ function library:init()
                         Parent = objs.background;
                     })
 
-                    objs.optionholder = utility:Draw('Square',{
+                    objs.optionholder = utility:Draw('Rectangle',{
                         Size = newUDim2(1-.03,0,1,-15);
                         Position = newUDim2(.015,0,0,13);
                         Transparency = 0;
@@ -2124,14 +2124,14 @@ function library:init()
                         local objs = toggle.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,17);
                             Transparency = 0;
                             ZIndex = z+5;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.background = utility:Draw('Square', {
+                        objs.background = utility:Draw('Rectangle', {
                             Size = newUDim2(0,8,0,8);
                             Position = newUDim2(0,2,0,4);
                             ThemeColor = 'Option Background';
@@ -2147,7 +2147,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 1';
@@ -2155,7 +2155,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -2273,14 +2273,14 @@ function library:init()
                             local objs = color.objects;
                             local z = library.zindexOrder.window+25;
     
-                            objs.holder = utility:Draw('Square', {
+                            objs.holder = utility:Draw('Rectangle', {
                                 Size = newUDim2(0,21,0,17);
                                 Transparency = 0;
                                 ZIndex = z+6;
                                 Parent = self.objects.holder;
                             })
     
-                            objs.background = utility:Draw('Square', {
+                            objs.background = utility:Draw('Rectangle', {
                                 Size = newUDim2(0,15,0,8);
                                 Position = newUDim2(0,4,0,5);
                                 ZIndex = z+3;
@@ -2295,7 +2295,7 @@ function library:init()
                                 Parent = objs.background;
                             })
     
-                            objs.border1 = utility:Draw('Square', {
+                            objs.border1 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 1';
@@ -2303,7 +2303,7 @@ function library:init()
                                 Parent = objs.background;
                             })
     
-                            objs.border2 = utility:Draw('Square', {
+                            objs.border2 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 2';
@@ -2433,7 +2433,7 @@ function library:init()
                             local objs = bind.objects;
                             local z = library.zindexOrder.window+25;
     
-                            objs.holder = utility:Draw('Square', {
+                            objs.holder = utility:Draw('Rectangle', {
                                 Size = newUDim2(0,0,0,17);
                                 Transparency = 0;
                                 ZIndex = z+6;
@@ -2611,14 +2611,14 @@ function library:init()
                             local objs = slider.objects;
                             local z = library.zindexOrder.window+25;
 
-                            objs.holder = utility:Draw('Square', {
+                            objs.holder = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,0,0,20);
                                 Transparency = 0;
                                 ZIndex = z+6;
                                 Parent = toggle.objects.holder;
                             })
 
-                            objs.background = utility:Draw('Square', {
+                            objs.background = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,-4,1,-8);
                                 Position = newUDim2(0,2,0,4);
                                 ThemeColor = 'Option Background';
@@ -2626,14 +2626,14 @@ function library:init()
                                 Parent = objs.holder;
                             })
 
-                            objs.slider = utility:Draw('Square', {
+                            objs.slider = utility:Draw('Rectangle', {
                                 Size = newUDim2(0,0,1,0);
                                 ThemeColor = 'Accent';
                                 ZIndex = z+3;
                                 Parent = objs.background;
                             })
 
-                            objs.border1 = utility:Draw('Square', {
+                            objs.border1 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 1';
@@ -2641,7 +2641,7 @@ function library:init()
                                 Parent = objs.background;
                             })
 
-                            objs.border2 = utility:Draw('Square', {
+                            objs.border2 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 2';
@@ -2789,14 +2789,14 @@ function library:init()
                             local objs = list.objects;
                             local z = library.zindexOrder.window+25;
     
-                            objs.holder = utility:Draw('Square', {
+                            objs.holder = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,0,0,22);
                                 Transparency = 0;
                                 ZIndex = z+6;
                                 Parent = toggle.objects.holder;
                             })
     
-                            objs.background = utility:Draw('Square', {
+                            objs.background = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,-4,1,-8);
                                 Position = newUDim2(0,2,0,4);
                                 ThemeColor = 'Option Background';
@@ -2804,7 +2804,7 @@ function library:init()
                                 Parent = objs.holder;
                             })
     
-                            objs.border1 = utility:Draw('Square', {
+                            objs.border1 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 1';
@@ -2812,7 +2812,7 @@ function library:init()
                                 Parent = objs.background;
                             })
     
-                            objs.border2 = utility:Draw('Square', {
+                            objs.border2 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 2';
@@ -2985,14 +2985,14 @@ function library:init()
                         local objs = slider.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,32);
                             Transparency = 0;
                             ZIndex = z+4;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.background = utility:Draw('Square', {
+                        objs.background = utility:Draw('Rectangle', {
                             Size = newUDim2(1,-4,0,11);
                             Position = newUDim2(0,2,1,-14);
                             ThemeColor = 'Option Background';
@@ -3000,14 +3000,14 @@ function library:init()
                             Parent = objs.holder;
                         })
 
-                        objs.slider = utility:Draw('Square', {
+                        objs.slider = utility:Draw('Rectangle', {
                             Size = newUDim2(0,0,1,0);
                             ThemeColor = 'Accent';
                             ZIndex = z+3;
                             Parent = objs.background;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 1';
@@ -3015,7 +3015,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -3041,7 +3041,7 @@ function library:init()
                             Parent = objs.holder;
                         })
 
-                        objs.plusDetector = utility:Draw('Square', {
+                        objs.plusDetector = utility:Draw('Rectangle', {
                             Size = newUDim2(0,14,0,14);
                             Position = newUDim2(1,-28,0,1);
                             Transparency = 0;
@@ -3049,7 +3049,7 @@ function library:init()
                             Parent = objs.holder;
                         })
 
-                        objs.minusDetector = utility:Draw('Square', {
+                        objs.minusDetector = utility:Draw('Rectangle', {
                             Size = newUDim2(0,14,0,14);
                             Position = newUDim2(1,-14,0,1);
                             Transparency = 0;
@@ -3222,14 +3222,14 @@ function library:init()
                         local objs = button.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,22);
                             Transparency = 0;
                             ZIndex = z+4;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.background = utility:Draw('Square', {
+                        objs.background = utility:Draw('Rectangle', {
                             Size = newUDim2(1,-4,0,14);
                             Position = newUDim2(0,2,0,4);
                             ThemeColor = 'Option Background';
@@ -3237,7 +3237,7 @@ function library:init()
                             Parent = objs.holder;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 1';
@@ -3245,7 +3245,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -3357,14 +3357,14 @@ function library:init()
                             local objs = button.objects;
                             local z = library.zindexOrder.window+25;
     
-                            objs.holder = utility:Draw('Square', {
+                            objs.holder = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,0,1,0);
                                 Transparency = 0;
                                 ZIndex = z+5;
                                 Parent = self.objects.holder;
                             })
     
-                            objs.background = utility:Draw('Square', {
+                            objs.background = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,-4,1,-8);
                                 Position = newUDim2(0,2,0,4);
                                 ThemeColor = 'Option Background';
@@ -3372,7 +3372,7 @@ function library:init()
                                 Parent = objs.holder;
                             })
     
-                            objs.border1 = utility:Draw('Square', {
+                            objs.border1 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 1';
@@ -3380,7 +3380,7 @@ function library:init()
                                 Parent = objs.background;
                             })
     
-                            objs.border2 = utility:Draw('Square', {
+                            objs.border2 = utility:Draw('Rectangle', {
                                 Size = newUDim2(1,2,1,2);
                                 Position = newUDim2(0,-1,0,-1);
                                 ThemeColor = 'Option Border 2';
@@ -3523,28 +3523,28 @@ function library:init()
                         local objs = separator.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,18);
                             Transparency = 0;
                             ZIndex = z;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.line1 = utility:Draw('Square', {
+                        objs.line1 = utility:Draw('Rectangle', {
                             Position = newUDim2(0,0,0,1);
                             ThemeColor = 'Option Background';
                             ZIndex = z+1;
                             Parent = objs.holder;
                         })
 
-                        objs.line2 = utility:Draw('Square', {
+                        objs.line2 = utility:Draw('Rectangle', {
                             Position = newUDim2(0,0,0,1);
                             ThemeColor = 'Option Background';
                             ZIndex = z+1;
                             Parent = objs.holder;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -3552,7 +3552,7 @@ function library:init()
                             Parent = objs.line1;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -3627,14 +3627,14 @@ function library:init()
                         local objs = color.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,19);
                             Transparency = 0;
                             ZIndex = z+5;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.background = utility:Draw('Square', {
+                        objs.background = utility:Draw('Rectangle', {
                             Size = newUDim2(0,15,0,8);
                             Position = newUDim2(1,-16,0,5);
                             ZIndex = z+3;
@@ -3649,7 +3649,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 1';
@@ -3657,7 +3657,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -3787,14 +3787,14 @@ function library:init()
                         local objs = box.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,37);
                             Transparency = 0;
                             ZIndex = z+4;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.background = utility:Draw('Square', {
+                        objs.background = utility:Draw('Rectangle', {
                             Size = newUDim2(1,-4,0,15);
                             Position = newUDim2(0,2,1,-17);
                             ThemeColor = 'Option Background';
@@ -3802,7 +3802,7 @@ function library:init()
                             Parent = objs.holder;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 1';
@@ -3810,7 +3810,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -4015,7 +4015,7 @@ function library:init()
                         local objs = bind.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,19);
                             Transparency = 0;
                             ZIndex = z+5;
@@ -4185,14 +4185,14 @@ function library:init()
                         local objs = list.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Size = newUDim2(1,0,0,40);
                             Transparency = 0;
                             ZIndex = z+4;
                             Parent = section.objects.optionholder;
                         })
 
-                        objs.background = utility:Draw('Square', {
+                        objs.background = utility:Draw('Rectangle', {
                             Size = newUDim2(1,-4,0,15);
                             Position = newUDim2(0,2,1,-19);
                             ThemeColor = 'Option Background';
@@ -4200,7 +4200,7 @@ function library:init()
                             Parent = objs.holder;
                         })
 
-                        objs.border1 = utility:Draw('Square', {
+                        objs.border1 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 1';
@@ -4208,7 +4208,7 @@ function library:init()
                             Parent = objs.background;
                         })
 
-                        objs.border2 = utility:Draw('Square', {
+                        objs.border2 = utility:Draw('Rectangle', {
                             Size = newUDim2(1,2,1,2);
                             Position = newUDim2(0,-1,0,-1);
                             ThemeColor = 'Option Border 2';
@@ -4383,7 +4383,7 @@ function library:init()
                         local objs = text.objects;
                         local z = library.zindexOrder.window+25;
 
-                        objs.holder = utility:Draw('Square', {
+                        objs.holder = utility:Draw('Rectangle', {
                             Transparency = 0;
                             ZIndex = z+5;
                             Parent = section.objects.optionholder;
@@ -4514,13 +4514,13 @@ function library:init()
     -- Tooltip
     do
         local z = library.zindexOrder.window + 2000;
-        tooltipObjects.background = utility:Draw('Square', {
+        tooltipObjects.background = utility:Draw('Rectangle', {
             ThemeColor = 'Group Background';
             ZIndex = z;
             Visible = false;
         })
 
-        tooltipObjects.border1 = utility:Draw('Square', {
+        tooltipObjects.border1 = utility:Draw('Rectangle', {
             Size = UDim2.new(1,2,1,2);
             Position = UDim2.new(0,-1,0,-1);
             ThemeColor = 'Border 1';
@@ -4528,7 +4528,7 @@ function library:init()
             Parent = tooltipObjects.background;
         })
 
-        tooltipObjects.border2 = utility:Draw('Square', {
+        tooltipObjects.border2 = utility:Draw('Rectangle', {
             Size = UDim2.new(1,4,1,4);
             Position = UDim2.new(0,-2,0,-2);
             ThemeColor = 'Border 3';
@@ -4625,7 +4625,7 @@ function library:init()
             local objs = self.watermark.objects;
             local z = self.zindexOrder.watermark;
             
-            objs.background = utility:Draw('Square', {
+            objs.background = utility:Draw('Rectangle', {
                 Visible = false;
                 Size = newUDim2(0, 200, 0, 17);
                 Position = newUDim2(0,800,0,100);
@@ -4633,7 +4633,7 @@ function library:init()
                 ZIndex = z;
             })
 
-            objs.border1 = utility:Draw('Square', {
+            objs.border1 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 2';
@@ -4641,7 +4641,7 @@ function library:init()
                 ZIndex = z-1;
             })
 
-            objs.border2 = utility:Draw('Square', {
+            objs.border2 = utility:Draw('Rectangle', {
                 Size = newUDim2(1,2,1,2);
                 Position = newUDim2(0,-1,0,-1);
                 ThemeColor = 'Border 3';
@@ -4649,7 +4649,7 @@ function library:init()
                 ZIndex = z-2;
             })
             
-            objs.topbar = utility:Draw('Square', {
+            objs.topbar = utility:Draw('Rectangle', {
                 Size = newUDim2(1,0,0,1);
                 ThemeColor = 'Accent';
                 ZIndex = z+1;
